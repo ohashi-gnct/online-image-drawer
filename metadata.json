@@ -1,0 +1,5 @@
+{
+  "name": "オンライン画像エディター (Online Image Editor)",
+  "description": "画像をアップロードまたはクリップボードからペーストし、赤いペンで書き込みができるシンプルなオンライン画像編集ツールです。WebPおよびHEIF/HEIC形式に対応しています。",
+  "requestFramePermissions": []
+}
