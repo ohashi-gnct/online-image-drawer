@@ -1,14 +1,122 @@
-# Run and deploy your AI Studio app
 
-This contains everything you need to run your app locally.
+# オンライン画像エディター (Online Image Editor)
 
-## Run Locally
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/ (ここにプレビュー画像のパスを挿入、例: 1234567/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.png)" alt="アプリケーションのスクリーンショット" width="700">
+</div>
+<br>
 
-**Prerequisites:**  Node.js
+「オンライン画像エディター」は、ブラウザ上で直感的に画像編集ができるウェブアプリケーションです。
+ローカルファイルのアップロードやクリップボードからのペーストで画像を開き、カスタマイズ可能なペンツールで自由に書き込みを行うことができます。WebPやHEIF/HEICといったモダンな画像形式にも対応しており、編集後の画像は手軽にダウンロード可能です。
 
+## ✨ 主な機能
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+*   **画像読み込み:**
+    *   ローカルファイルシステムからの画像アップロード (JPEG, PNG, WebP, HEIC/HEIF形式をサポート)
+    *   クリップボードからの画像ペースト機能
+*   **ペンツール:**
+    *   **色の選択:** 複数のプリセットカラーから選択可能 (赤、青、緑、黄、黒、白)
+    *   **太さの選択:** 3段階の太さ (細: 3px, 中: 5px, 太: 10px) を視覚的なアイコンで選択
+*   **画像処理:**
+    *   HEIC/HEIF形式の画像をクライアントサイドでPNG形式に自動変換
+*   **編集機能:**
+    *   編集した画像のダウンロード機能 (PNG形式)
+    *   キャンバス上の書き込みを全て消去するクリア機能
+*   **UI/UX:**
+    *   操作性を重視した直感的でクリーンなインターフェース
+    *   レスポンシブデザインにより、PC、タブレット、スマートフォンなど各種デバイスに対応
+    *   目に優しいダークテーマを採用
+    *   読み込み中やエラー発生時の状態を明確に表示
+
+## 🛠️ 使用技術
+
+*   **フロントエンド:**
+    *   React 19 (主にHooksとFunctional Componentsを利用)
+    *   TypeScript (型安全性と開発効率の向上)
+    *   Tailwind CSS (ユーティリティファーストのCSSフレームワーク - CDN版を使用)
+*   **画像処理ライブラリ:**
+    *   `heic2any` (HEIC/HEIF形式からPNGへの変換)
+*   **モジュール解決:**
+    *   ES Modules (CDN経由 - `esm.sh` を利用)
+*   **ビルド・デプロイ:**
+    *   GitHub Actions (TypeScriptのトランスパイルとGitHub Pagesへの自動デプロイ)
+    *   TypeScript Compiler (`tsc`)
+
+## 🚀 デプロイと実行 (GitHub Pages)
+
+このアプリケーションは、GitHub Actions を使用して、コードがリポジトリにプッシュされるたびに自動的にビルド（TypeScript から JavaScript へのトランスパイル）され、GitHub Pages にデプロイされます。
+
+**設定手順:**
+
+1.  **リポジトリの準備:**
+    *   このリポジトリをフォークするか、ご自身のGitHubアカウントにコードをプッシュしてください。
+    *   プロジェクトルートに `tsconfig.json` (TypeScriptコンパイラ設定) と `.github/workflows/deploy.yml` (GitHub Actionsワークフロー設定) が含まれていることを確認してください。これらはこのREADMEが提供するコードに含まれています。
+
+2.  **GitHub Pages の設定:**
+    *   リポジトリの **Settings** タブに移動します。
+    *   左側のナビゲーションメニューから **Pages** を選択します。
+    *   **Build and deployment** セクションの **Source** で、ドロップダウンから **GitHub Actions** を選択します。
+        <img width="500" alt="GitHub Pages SourceをGitHub Actionsに設定するスクリーンショット" src="https://user-images.githubusercontent.com/1282363/205697779-2865920f-2270-4643-9831-255c56d35398.png">
+        *(画像は参考です。UIは変更される可能性があります)*
+
+3.  **デプロイの確認:**
+    *   `main` ブランチ（またはワークフローファイルで指定したブランチ）にコミットをプッシュすると、GitHub Actions が自動的に実行されます。
+    *   リポジトリの **Actions** タブでワークフローの進捗を確認できます。
+    *   ワークフローが正常に完了すると、GitHub Pages の設定画面にサイトのURL（例: `https://[あなたのGitHubユーザー名].github.io/[リポジトリ名]/`）が表示されます。このURLにアクセスして、アプリケーションが正しく動作するか確認してください。初回デプロイには数分かかることがあります。
+
+**注意:**
+*   `index.html` は、トランスパイルされた `index.js` を読み込むように設定されています (`<script type="module" src="./index.js"></script>`)。GitHub Actions のワークフローは、`tsc` コマンドを使用してすべての `.tsx` および `.ts` ファイルを、元のファイルと同じ場所に `.js` ファイルとして出力します。これにより、パスの整合性が保たれます。
+
+## 💻 ローカルでの確認 (オプション)
+
+GitHub Actionsによる自動デプロイが推奨されますが、ローカルで変更を確認したい場合は以下の手順を実行できます。
+
+1.  **リポジトリをクローン:**
+    ```bash
+    git clone https://github.com/[あなたのGitHubユーザー名]/[リポジトリ名].git
+    cd [リポジトリ名]
+    ```
+2.  **TypeScript のインストール (まだの場合):**
+    ```bash
+    npm install -g typescript 
+    ```
+    *(もしNode.js/npm環境をローカルに構築したくない場合は、このステップはスキップし、GitHub上での変更とActionsによるデプロイに依存してください)*
+3.  **トランスパイル (ローカルで実行する場合):**
+    ```bash
+    tsc
+    ```
+    これにより、`tsconfig.json` の設定に従って `.js` ファイルが生成されます。
+4.  **`index.html` をブラウザで開く:**
+    プロジェクトルートにある `index.html` ファイルを直接ウェブブラウザで開きます。
+
+    VSCodeをお使いの場合は、Live Server拡張機能を利用すると便利ですが、Live Server自体は `.tsx` を自動トランスパイルしません。事前に `tsc -w` (watchモード) などをターミナルで実行しておくと、ファイル変更時に自動でトランスパイルされます。
+
+## 🎨 スタイルについて (Tailwind CSS)
+現在、Tailwind CSS はCDN経由で読み込んでいます。これは開発や簡単なデモには便利ですが、本番環境ではパフォーマンス最適化（未使用スタイルの除去など）のために、Tailwind CSS をPostCSSプラグインとしてインストールするか、Tailwind CLI を使用することを推奨します。詳細は[Tailwind CSS公式サイトのインストールガイド](https://tailwindcss.com/docs/installation)を参照してください。
+
+## 📝 今後の改善案 (TODO / Ideas)
+
+*   [ ] テキスト入力ツールの追加
+*   [ ] 直線、円、四角などの図形描画ツール
+*   [ ] アンドゥ・リドゥ機能 (元に戻す・やり直す)
+*   [ ] 画像の回転・反転機能
+*   [ ] トリミング機能
+*   [ ] 明るさ・コントラスト調整などの簡易フィルター
+*   [ ] より多くのブラシスタイルやテクスチャの追加
+*   [ ] 保存形式の選択 (JPEG, WebPなど)
+*   [ ] PWA (Progressive Web App) 対応によるオフライン利用強化
+*   [ ] 多言語対応 (i18n)
+
+## 🤝 コントリビューション
+
+バグ報告、機能提案、改善提案など、あらゆるコントリビューションを歓迎します！
+Issueを作成するか、Pull Requestを送ってください。
+
+## 📜 ライセンス
+
+このプロジェクトは [ここにライセンス名を記述 (例: MIT License)] の下で公開されています。
+詳細は `LICENSE` ファイルをご覧ください (もしあれば)。
+
+---
+
+このオンライン画像エディターが、あなたのクリエイティブな作業の一助となれば幸いです。

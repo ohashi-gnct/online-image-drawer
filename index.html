@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>オンライン画像エディター</title>
+  <!-- 
+    Tailwind CSS CDN: Suitable for development and quick demos. 
+    For production, consider installing Tailwind CSS as a PostCSS plugin or using the Tailwind CLI 
+    for better performance and customization. See: https://tailwindcss.com/docs/installation
+  -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +39,12 @@
 </head>
 <body class="bg-gray-100">
   <div id="root"></div>
-  <script type="module" src="./index.tsx"></script>
+  {/* 
+    Load the transpiled JavaScript entry point. 
+    You need to convert your .tsx files (e.g., index.tsx, App.tsx, components/*.tsx) 
+    into .js files using a tool like the TypeScript compiler (tsc) or esbuild.
+  */}
+  <script type="module" src="./index.js"></script>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>
